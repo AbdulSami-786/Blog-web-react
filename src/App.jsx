@@ -194,6 +194,22 @@ const bigWave = keyframes`
   }
 `;
 
+// NEW ANIMATIONS
+const slideDown = keyframes`
+  0% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+`;
+
+const scaleIn = keyframes`
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+`;
+
+const fadeIn = keyframes`
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
 const Global = createGlobalStyle`
   :root{
     --ocean-dark: #001d3d;
@@ -204,6 +220,17 @@ const Global = createGlobalStyle`
     --muted: #9ab8d0;
     --card-bg: rgba(255,255,255,0.08);
   }
+  
+  [data-theme="light"] {
+    --ocean-dark: #e6f7ff;
+    --ocean-mid: #b3e0ff;
+    --ocean-light: #0077b6;
+    --ocean-accent: #0096c7;
+    --text-light: #001d3d;
+    --muted: #4a6572;
+    --card-bg: rgba(255,255,255,0.9);
+  }
+  
   *{box-sizing:border-box;}
   body{
     margin:0;
@@ -212,6 +239,7 @@ const Global = createGlobalStyle`
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: all 0.3s ease;
   }
   a{color:inherit;text-decoration:none;}
   ::-webkit-scrollbar {
@@ -232,6 +260,10 @@ const Container = styled.div`
   padding: 40px 20px;
   position: relative;
   min-height: 100vh;
+  
+  @media (max-width: 768px) {
+    padding: 20px 15px;
+  }
 `;
 
 /* ------------------ ANIMATED BACKGROUND ELEMENTS ------------------ */
@@ -284,6 +316,170 @@ const WaveTransition = styled(motion.div)`
   `}
 `;
 
+/* ------------------ NEW COMPONENTS ------------------ */
+
+// Search Bar Component
+const SearchContainer = styled(motion.div)`
+  position: relative;
+  margin: 20px 0;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 12px 50px 12px 20px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  color: var(--text-light);
+  font-size: 1rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--ocean-accent);
+    box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.1);
+  }
+
+  &::placeholder {
+    color: var(--muted);
+  }
+`;
+
+const SearchIcon = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  cursor: pointer;
+`;
+
+// Category Filter Component
+const CategoryFilter = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 30px 0;
+  justify-content: center;
+`;
+
+const CategoryButton = styled(motion.button)`
+  background: ${props => props.active ? 'linear-gradient(90deg, var(--ocean-light), var(--ocean-accent))' : 'var(--card-bg)'};
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: ${props => props.active ? 'white' : 'var(--text-light)'};
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 168, 232, 0.3);
+  }
+`;
+
+// Theme Toggle Component
+const ThemeToggle = styled(motion.button)`
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-light);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  font-size: 1.2rem;
+  
+  &:hover {
+    ${css`animation: ${spin} 1s;`}
+  }
+`;
+
+// Loading Spinner Component
+const LoadingSpinner = styled(motion.div)`
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(76, 201, 240, 0.3);
+  border-top: 3px solid var(--ocean-accent);
+  border-radius: 50%;
+  margin: 40px auto;
+  ${css`animation: ${spin} 1s linear infinite;`}
+`;
+
+// Back to Top Button
+const BackToTop = styled(motion.button)`
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(90deg, var(--ocean-light), var(--ocean-accent));
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 168, 232, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  
+  &:hover {
+    ${css`animation: ${bounce} 0.6s;`}
+  }
+`;
+
+// Newsletter Component
+const NewsletterSection = styled(motion.section)`
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 60px 0;
+  text-align: center;
+`;
+
+const NewsletterForm = styled.form`
+  display: flex;
+  gap: 15px;
+  max-width: 400px;
+  margin: 20px auto 0;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const NewsletterInput = styled.input`
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--ocean-accent);
+  }
+
+  &::placeholder {
+    color: var(--muted);
+  }
+`;
+
 /* ------------------ NAVBAR ------------------ */
 const NavBar = styled(motion.nav)`
   display: flex;
@@ -292,6 +488,12 @@ const NavBar = styled(motion.nav)`
   padding: 20px 0;
   margin-bottom: 40px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
 `;
 
 const Logo = styled(motion.div)`
@@ -314,6 +516,13 @@ const Logo = styled(motion.div)`
 const NavLinks = styled(motion.div)`
   display: flex;
   gap: 30px;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
   
   a {
     position: relative;
@@ -574,6 +783,11 @@ const BlogGrid = styled(motion.div)`
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
   margin-top: 40px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 `;
 
 /* ------------------ IMAGE MODAL ------------------ */
@@ -973,6 +1187,55 @@ From microscopic plankton to massive whales, marine biologists work to understan
   }
 ];
 
+/* ------------------ NEW HOOKS AND UTILITIES ------------------ */
+
+// Custom hook for theme
+const useTheme = () => {
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    document.body.setAttribute('data-theme', savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.body.setAttribute('data-theme', newTheme);
+  };
+
+  return { theme, toggleTheme };
+};
+
+// Custom hook for scroll to top
+const useScrollToTop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return { isVisible, scrollToTop };
+};
+
 /* ------------------ ANIMATED BACKGROUND COMPONENT ------------------ */
 function AnimatedBackground() {
   const [bubbles, setBubbles] = useState([]);
@@ -1126,21 +1389,51 @@ function Home() {
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionTo, setTransitionTo] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const { isVisible, scrollToTop } = useScrollToTop();
+
+  // Get unique categories
+  const categories = ['All', ...new Set(posts.map(post => post.category))];
+
+  // Filter posts based on search and category
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const handleCardClick = (postId) => {
     setTransitionTo(postId);
     setIsTransitioning(true);
+    setIsLoading(true);
     
-    // Wait for wave animation to complete before navigating
     setTimeout(() => {
       navigate(`/blog/${postId}`);
-      // Reset transition state after navigation
       setTimeout(() => {
         setIsTransitioning(false);
         setTransitionTo(null);
+        setIsLoading(false);
       }, 100);
     }, 800);
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    alert('Thank you for subscribing to our newsletter!');
+    e.target.reset();
   };
 
   return (
@@ -1181,26 +1474,108 @@ function Home() {
           </CTAButton>
         </HeroSection>
 
-        <motion.h2
+        {/* Search Bar */}
+        <SearchContainer
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <SearchInput
+            type="text"
+            placeholder="Search articles..."
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <SearchIcon>🔍</SearchIcon>
+        </SearchContainer>
+
+        {/* Category Filter */}
+        <CategoryFilter
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          {categories.map(category => (
+            <CategoryButton
+              key={category}
+              active={selectedCategory === category}
+              onClick={() => handleCategoryChange(category)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {category}
+            </CategoryButton>
+          ))}
+        </CategoryFilter>
+
+        <motion.h2
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
           style={{ marginBottom: "30px", fontSize: "2rem" }}
         >
-          Latest Articles
+          {filteredPosts.length} Article{filteredPosts.length !== 1 ? 's' : ''} Found
         </motion.h2>
 
-        <BlogGrid>
-          {posts.map((post, index) => (
-            <BlogCardComponent 
-              key={post.id} 
-              post={post} 
-              index={index} 
-              onCardClick={handleCardClick}
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <BlogGrid>
+            {filteredPosts.map((post, index) => (
+              <BlogCardComponent 
+                key={post.id} 
+                post={post} 
+                index={index} 
+                onCardClick={handleCardClick}
+              />
+            ))}
+          </BlogGrid>
+        )}
+
+        {/* Newsletter Section */}
+        <NewsletterSection
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <h3 style={{ marginBottom: '10px', color: 'var(--ocean-accent)' }}>
+            Stay Updated with Ocean Discoveries
+          </h3>
+          <p style={{ color: 'var(--muted)', marginBottom: '20px' }}>
+            Subscribe to our newsletter for the latest articles and ocean news
+          </p>
+          <NewsletterForm onSubmit={handleNewsletterSubmit}>
+            <NewsletterInput
+              type="email"
+              placeholder="Enter your email"
+              required
             />
-          ))}
-        </BlogGrid>
+            <CTAButton
+              type="submit"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ padding: '12px 20px' }}
+            >
+              Subscribe
+            </CTAButton>
+          </NewsletterForm>
+        </NewsletterSection>
       </motion.div>
+
+      {/* Back to Top Button */}
+      <AnimatePresence>
+        {isVisible && (
+          <BackToTop
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            onClick={scrollToTop}
+            whileHover={{ scale: 1.1 }}
+          >
+            ↑
+          </BackToTop>
+        )}
+      </AnimatePresence>
 
       {/* Wave Transition Overlay */}
       <AnimatePresence>
@@ -1624,6 +1999,7 @@ const Footer = styled(motion.footer)`
 /* ------------------ MAIN APP COMPONENT ------------------ */
 function AppContent() {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   
   return (
     <>
@@ -1649,6 +2025,13 @@ function AppContent() {
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
+            <ThemeToggle
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </ThemeToggle>
           </NavLinks>
         </NavBar>
 
